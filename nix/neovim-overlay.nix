@@ -33,9 +33,18 @@ let
   all-plugins = with pkgs.vimPlugins; [
     # plugins from nixpkgs go in here.
     # https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=vimPlugins
+
+    # treesitter
     nvim-treesitter.withAllGrammars
+
+    # colorschemes
     catppuccin-nvim
+
+    # LSP
     nvim-lspconfig
+
+    # UI
+    snacks-nvim
   ];
 
   extraPackages = with pkgs; [
