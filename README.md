@@ -1,3 +1,17 @@
+## BallsVim
+
+TODO: replace this with proper documentation
+
+### Notes
+Design principle - external tools are not provided by this package. BallsVim will determine if the tool is available during load and configure accordingly.
+
+This includes:
+- language servers
+- formatters
+- linters
+
+## Kickstarter stuff below
+
 <!-- markdownlint-disable -->
 <br />
 <div align="center">
