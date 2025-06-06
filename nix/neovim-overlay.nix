@@ -44,6 +44,7 @@ let
     nvim-lspconfig
 
     # UI
+    mini-icons
     nui-nvim
     snacks-nvim
   ];
