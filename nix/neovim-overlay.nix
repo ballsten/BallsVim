@@ -44,8 +44,10 @@ let
     nvim-lspconfig
 
     # UI
+    bufferline-nvim
     mini-icons
     noice-nvim
+    nvim-web-devicons
     nui-nvim
     snacks-nvim
   ];
