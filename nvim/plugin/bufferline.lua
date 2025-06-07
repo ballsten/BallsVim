@@ -1,8 +1,8 @@
 -- only load once
-if vim.g.loaded_plugin_ui_bufferline then
+if vim.g.loaded_plugin_bufferline then
   return
 end
-vim.g.loaded_plugin_ui_bufferline = true
+vim.g.loaded_plugin_bufferline = true
 
 -- setup
 require('bufferline').setup {

@@ -1,8 +1,8 @@
 -- only load once
-if vim.g.loaded_plugin_ui_noice then
+if vim.g.loaded_plugin_noice then
   return
 end
-vim.g.loaded_plugin_ui_noice = true
+vim.g.loaded_plugin_noice = true
 
 -- setup
 require('noice').setup {

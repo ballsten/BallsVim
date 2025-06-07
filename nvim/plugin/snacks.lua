@@ -1,8 +1,8 @@
 -- only load once
-if vim.g.loaded_plugin_ui_snacks then
+if vim.g.loaded_plugin_snacks then
   return
 end
-vim.g.loaded_plugin_ui_snacks = true
+vim.g.loaded_plugin_snacks = true
 
 -- snack options
 require('snacks').setup {

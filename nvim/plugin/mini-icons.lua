@@ -1,8 +1,8 @@
 -- only load once
-if vim.g.loaded_plugin_ui_miniicons then
+if vim.g.loaded_plugin_miniicons then
   return
 end
-vim.g.loaded_plugin_ui_miniicons = true
+vim.g.loaded_plugin_miniicons = true
 
 require('mini.icons').setup {
   file = {
