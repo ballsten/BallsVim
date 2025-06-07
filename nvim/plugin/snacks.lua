@@ -86,6 +86,15 @@ Snacks.toggle.profiler_highlights():map('<leader>dph')
 if vim.lsp.inlay_hint then
   Snacks.toggle.inlay_hints():map('<leader>uh')
 end
+Snacks.toggle({
+  name = 'Git Signs',
+  get = function()
+    return require('gitsigns.config').config.signcolumn
+  end,
+  set = function(state)
+    require('gitsigns').toggle_signs(state)
+  end,
+}):map('<leader>uG')
 
 -- lazygit
 if vim.fn.executable('lazygit') == 1 then
