@@ -4,7 +4,7 @@ if vim.g.loaded_plugin_whichkey then
 end
 vim.g.loaded_plugin_whichkey = true
 
--- snack options
+-- setup options
 require('which-key').setup ({
   preset = "helix",
   defaults = {},
