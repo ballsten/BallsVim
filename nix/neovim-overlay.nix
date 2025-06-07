@@ -45,6 +45,7 @@ let
 
     # UI
     mini-icons
+    noice-nvim
     nui-nvim
     snacks-nvim
   ];
