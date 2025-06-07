@@ -43,6 +43,14 @@ let
     # LSP
     nvim-lspconfig
 
+    # Editor
+    grug-far-nvim
+    flash-nvim
+    which-key-nvim
+    gitsigns-nvim
+    trouble-nvim
+    todo-comments-nvim
+
     # UI
     bufferline-nvim
     lualine-nvim
