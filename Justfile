@@ -1,3 +1,6 @@
+dev:
+  nvim-dev
+
 run:
   nix run .
 
