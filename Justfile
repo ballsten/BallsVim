@@ -5,5 +5,5 @@ run:
   nix run .
 
 format:
-  stylua **/*.lua
+  stylua -g '*.lua' -- .
   nixfmt **/*.nix

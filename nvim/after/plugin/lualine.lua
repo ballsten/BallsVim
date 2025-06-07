@@ -5,35 +5,35 @@ end
 vim.g.loaded_plugin_lualine = true
 
 -- setup
-local BallsVim = require("BallsVim")
+local BallsVim = require('BallsVim')
 local icons = BallsVim.icons
 
-require("lualine").setup({
-    options = {
-      theme = "auto",
-      globalstatus = vim.o.laststatus == 3,
-      disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
-    },
-    sections = {
-      lualine_a = { "mode" },
-      lualine_b = { "branch" },
+require('lualine').setup {
+  options = {
+    theme = 'auto',
+    globalstatus = vim.o.laststatus == 3,
+    disabled_filetypes = { statusline = { 'dashboard', 'alpha', 'ministarter', 'snacks_dashboard' } },
+  },
+  sections = {
+    lualine_a = { 'mode' },
+    lualine_b = { 'branch' },
 
-      lualine_c = {
-        vim.fn.getcwd(),
-        {
-          "diagnostics",
-          symbols = {
-            error = icons.diagnostics.Error,
-            warn = icons.diagnostics.Warn,
-            info = icons.diagnostics.Info,
-            hint = icons.diagnostics.Hint,
-          },
+    lualine_c = {
+      vim.fn.getcwd(),
+      {
+        'diagnostics',
+        symbols = {
+          error = icons.diagnostics.Error,
+          warn = icons.diagnostics.Warn,
+          info = icons.diagnostics.Info,
+          hint = icons.diagnostics.Hint,
         },
-        { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
-        { BallsVim.helpers.pretty_path() },
       },
-      lualine_x = {
-        Snacks.profiler.status(),
+      { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
+      { BallsVim.helpers.pretty_path() },
+    },
+    lualine_x = {
+      Snacks.profiler.status(),
         -- stylua: ignore
         {
           function() return require("noice").api.status.command.get() end,
@@ -71,15 +71,15 @@ require("lualine").setup({
             end
           end,
         },
-      },
-      lualine_y = {
-        { "progress", separator = " ", padding = { left = 1, right = 0 } },
-        { "location", padding = { left = 0, right = 1 } },
-      },
-      lualine_z = {
-        function()
-          return " " .. os.date("%R")
-        end,
-      },
     },
-  })
+    lualine_y = {
+      { 'progress', separator = ' ', padding = { left = 1, right = 0 } },
+      { 'location', padding = { left = 0, right = 1 } },
+    },
+    lualine_z = {
+      function()
+        return ' ' .. os.date('%R')
+      end,
+    },
+  },
+}
