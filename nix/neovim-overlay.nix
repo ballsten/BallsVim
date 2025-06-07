@@ -45,6 +45,7 @@ let
 
     # UI
     bufferline-nvim
+    lualine-nvim
     mini-icons
     noice-nvim
     nvim-web-devicons
