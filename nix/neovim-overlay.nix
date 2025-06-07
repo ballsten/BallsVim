@@ -63,6 +63,8 @@ let
 
   extraPackages = with pkgs; [
     # language servers, etc.
+    ripgrep
+    ast-grep
   ];
 in
 {
