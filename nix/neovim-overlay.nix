@@ -57,6 +57,10 @@ let
     trouble-nvim
     todo-comments-nvim
 
+    # formatting & linting
+    conform-nvim
+    nvim-lint
+
     # UI
     bufferline-nvim
     lualine-nvim
