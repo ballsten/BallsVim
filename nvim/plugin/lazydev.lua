@@ -4,11 +4,9 @@ if vim.g.loaded_plugin_lazydev then
 end
 vim.g.loaded_plugin_lazydev = true
 
-require("lazydev").setup({
+require('lazydev').setup {
   library = {
-      { path = "${3rd}/luv/library", words = { "vim%.uv" } },
-      { path = "snacks.nvim", words = { "Snacks" } },
-    }
-})
-
-
+    { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+    { path = 'snacks.nvim', words = { 'Snacks' } },
+  },
+}
