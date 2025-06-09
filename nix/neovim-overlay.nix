@@ -43,6 +43,12 @@ let
     # LSP
     nvim-lspconfig
 
+    # coding
+    lazydev-nvim
+    mini-ai
+    mini-pairs
+    ts-comments-nvim
+
     # Editor
     grug-far-nvim
     flash-nvim
