@@ -44,6 +44,9 @@ require('which-key').setup {
       },
       -- better descriptions
       { 'gx', desc = 'Open with system app' },
+      -- treesitter
+      { '<BS>', desc = 'Decrement Selection', mode = 'x' },
+      { '<c-space>', desc = 'Increment Selection', mode = { 'x', 'n' } },
     },
   },
 }
