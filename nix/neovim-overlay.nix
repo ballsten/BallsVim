@@ -71,6 +71,9 @@ let
     nvim-web-devicons
     nui-nvim
     snacks-nvim
+
+    # util
+    plenary-nvim
   ];
 
   extraPackages = with pkgs; [

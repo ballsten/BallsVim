@@ -4,6 +4,16 @@ if vim.g.loaded_plugin_snacks then
 end
 vim.g.loaded_plugin_snacks = true
 
+-- Terminal Mappings
+local function term_nav(dir)
+  ---@param self snacks.terminal
+  return function(self)
+    return self:is_floating() and '<c-' .. dir .. '>' or vim.schedule(function()
+      vim.cmd.wincmd(dir)
+    end)
+  end
+end
+
 -- snack options
 require('snacks').setup {
   bigfile = { enabled = true },
@@ -41,9 +51,20 @@ require('snacks').setup {
   indent = { enabled = true },
   input = { enabled = true },
   notifier = { enabled = true },
+  quickfile = { enabled = true },
   scope = { enabled = true },
   scroll = { enabled = true },
   statuscolumn = { enabled = true },
+  terminal = {
+    win = {
+      keys = {
+        nav_h = { '<C-h>', term_nav('h'), desc = 'Go to Left Window', expr = true, mode = 't' },
+        nav_j = { '<C-j>', term_nav('j'), desc = 'Go to Lower Window', expr = true, mode = 't' },
+        nav_k = { '<C-k>', term_nav('k'), desc = 'Go to Upper Window', expr = true, mode = 't' },
+        nav_l = { '<C-l>', term_nav('l'), desc = 'Go to Right Window', expr = true, mode = 't' },
+      },
+    },
+  },
   toggle = { enabled = true },
   words = { enabled = true },
 }
@@ -97,29 +118,23 @@ Snacks.toggle({
 }):map('<leader>uG')
 
 -- lazygit
+-- stylua: ignore start
 if vim.fn.executable('lazygit') == 1 then
-  map('n', '<leader>gg', function()
-    Snacks.lazygit()
-  end, { desc = 'Lazygit' })
-  map('n', '<leader>gf', function()
-    Snacks.picker.git_log_file()
-  end, { desc = 'Git Current File History' })
-  map('n', '<leader>gl', function()
-    Snacks.picker.git_log()
-  end, { desc = 'Git Log' })
+  map('n', '<leader>gg', function() Snacks.lazygit() end, { desc = 'Lazygit' })
+  map('n', '<leader>gf', function() Snacks.picker.git_log_file() end, { desc = 'Git Current File History' })
+  map('n', '<leader>gl', function() Snacks.picker.git_log() end, { desc = 'Git Log' })
 end
 
-map('n', '<leader>gb', function()
-  Snacks.picker.git_log_line()
-end, { desc = 'Git Blame Line' })
-map({ 'n', 'x' }, '<leader>gB', function()
-  Snacks.gitbrowse()
-end, { desc = 'Git Browse (open)' })
-map({ 'n', 'x' }, '<leader>gY', function()
-  Snacks.gitbrowse {
-    open = function(url)
-      vim.fn.setreg('+', url)
-    end,
-    notify = false,
-  }
-end, { desc = 'Git Browse (copy)' })
+map('n', '<leader>gb', function() Snacks.picker.git_log_line() end, { desc = 'Git Blame Line' })
+map({ 'n', 'x' }, '<leader>gB', function() Snacks.gitbrowse() end, { desc = 'Git Browse (open)' })
+---@diagnostic disable-next-line: missing-fields
+map({ 'n', 'x' }, '<leader>gY', function() Snacks.gitbrowse {
+  open = function(url) vim.fn.setreg('+', url) end,
+  notify = false,
+} end, { desc = 'Git Browse (copy)' })
+
+-- terimal keys
+map('n', '<leader>.', function() Snacks.scratch() end, { desc = 'Toggle Scratch Buffer' })
+map('n', '<leader>S', function() Snacks.scratch.select() end, { desc = 'Select Scratch Buffer' })
+map('n', '<leader>dps', function() Snacks.profiler.scratch() end, { desc = 'Profiler Scratch Buffer' })
+-- stylua: ignore end
