@@ -189,6 +189,9 @@ map("n", "<leader>/", function() Snacks.picker.grep() end, { desc = "Grep" })
 map("n", "<leader>:", function() Snacks.picker.command_history() end, { desc = "Command History" })
 map("n", "<leader><space>", function() Snacks.picker.smart() end, { desc = "Smart Find Files" })
 map("n", "<leader>n", function() Snacks.picker.notifications() end, { desc = "Notification History" })
+-- explorer
+map("n", "<leader>fe", function() Snacks.explorer() end, { desc = "Explorer Snacks" })
+map("n", "<leader>e", "<leader>fe", { desc = "Explorer Snacks" })
 -- find
 map("n", "<leader>fb", function() Snacks.picker.buffers() end, { desc = "Buffers" })
 map("n", "<leader>fB", function() Snacks.picker.buffers({ hidden = true, nofile = true }) end, { desc = "Buffers (all)" })

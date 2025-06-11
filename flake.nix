@@ -62,7 +62,7 @@
       {
         packages = rec {
           default = nvim;
-          nvim = pkgs.nvim-pkg;
+          nvim = pkgs.ballsvim;
         };
         devShells = {
           default = shell;

@@ -85,7 +85,7 @@ in
 {
   # This is the neovim derivation
   # returned by the overlay
-  nvim-pkg = mkNeovim {
+  ballsvim = mkNeovim {
     plugins = all-plugins;
     inherit extraPackages;
   };
