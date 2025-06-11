@@ -19,25 +19,30 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('n', '<leader>cl', function()
       Snacks.picker.lsp_config()
     end, { buffer = buffer, desc = 'Lsp Info' })
-    map('n', 'gr', vim.lsp.buf.references, { buffer = buffer, desc = 'References', nowait = true })
-    map('n', 'gI', vim.lsp.buf.implementation, { buffer = buffer, desc = 'Goto Implementation' })
-    map('n', 'gy', vim.lsp.buf.type_definition, { buffer = buffer, desc = 'Goto T[y]pe Definition' })
+    -- map('n', 'gr', vim.lsp.buf.references, { buffer = buffer, desc = 'References', nowait = true })
+    -- map('n', 'gI', vim.lsp.buf.implementation, { buffer = buffer, desc = 'Goto Implementation' })
+    -- map('n', 'gy', vim.lsp.buf.type_definition, { buffer = buffer, desc = 'Goto T[y]pe Definition' })
+    -- stylua: ignore start
+    map('n', 'gr', function() Snacks.picker.lsp_references() end, { buffer = buffer, desc = 'References', nowait = true })
+    map('n', 'gI', function() Snacks.picker.lsp_implementations() end, { buffer = buffer, desc = 'Goto Implementation' })
+    map('n', 'gy', function() Snacks.picker.lsp_type_definitions() end, { buffer = buffer, desc = 'Goto T[y]pe Definition' })
+    -- stylua: ignore end
     map('n', 'gD', vim.lsp.buf.declaration, { buffer = buffer, desc = 'Goto Declaration' })
     map('n', 'K', function()
       return vim.lsp.buf.hover()
     end, { buffer = buffer, desc = 'Hover' })
 
     if client:supports_method('textDocument/definition') then
-      map('n', 'gd', vim.lsp.buf.definition, { buffer = buffer, desc = 'Goto Definition' })
+      -- map('n', 'gd', vim.lsp.buf.definition, { buffer = buffer, desc = 'Goto Definition' })
+      -- stylua: ignore
+      map('n', 'gd', function() Snacks.picker.lsp_definitions() end, { buffer = buffer, desc = 'Goto Definition' })
     end
 
     if client:supports_method('textDocument/signatureHelp') then
-      map('n', 'gK', function()
-        return vim.lsp.buf.signature_help()
-      end, { buffer = buffer, desc = 'Signature Help' })
-      map('i', '<c-k>', function()
-        return vim.lsp.buf.signature_help()
-      end, { buffer = buffer, desc = 'Signature Help' })
+      -- stylua: ignore start
+      map('n', 'gK', function() return vim.lsp.buf.signature_help() end, { buffer = buffer, desc = 'Signature Help' })
+      map('i', '<c-k>', function() return vim.lsp.buf.signature_help() end, { buffer = buffer, desc = 'Signature Help' })
+      -- stylua: ignore end
     end
 
     if client:supports_method('textDocument/codeAction') then
@@ -145,7 +150,6 @@ local servers = {
         workspace = {
           checkThirdParty = false,
         },
-
         codeLens = {
           enable = true,
         },

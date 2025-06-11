@@ -4,6 +4,9 @@ if vim.g.loaded_plugin_todocomments then
 end
 vim.g.loaded_plugin_todocomments = true
 
+-- setup
+require('todo-comments').setup()
+
 -- keymaps
 local map = vim.keymap.set
 
@@ -20,5 +23,10 @@ map(
   '<cmd>Trouble todo toggle filter = {tag = {TODO,FIX,FIXME}}<cr>',
   { desc = 'Todo/Fix/Fixme (Trouble)' }
 )
-map('n', '<leader>st', '<cmd>TodoTelescope<cr>', { desc = 'Todo' })
-map('n', '<leader>sT', '<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>', { desc = 'Todo/Fix/Fixme' })
+
+-- stylua: ignore start
+---@diagnostic disable-next-line: undefined-field
+map('n', '<leader>st', function() Snacks.picker.todo_comments() end, { desc = 'Todo' })
+---@diagnostic disable-next-line: undefined-field
+map('n', '<leader>sT', function() Snacks.picker.todo_comments { keywords = { 'TODO', 'FIX', 'FIXME' } } end, { desc = 'Todo/Fix/Fixme' })
+-- stylua: ignore end
