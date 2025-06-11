@@ -61,8 +61,8 @@
       in
       {
         packages = rec {
-          default = nvim;
-          nvim = pkgs.ballsvim;
+          default = ballsvim;
+          ballsvim = pkgs.ballsvim;
         };
         devShells = {
           default = shell;
