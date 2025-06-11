@@ -46,6 +46,8 @@ let
     nvim-lspconfig
 
     # coding
+    blink-cmp
+    friendly-snippets
     lazydev-nvim
     mini-ai
     mini-pairs
