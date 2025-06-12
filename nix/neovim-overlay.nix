@@ -70,6 +70,12 @@ let
     trouble-nvim
     todo-comments-nvim
 
+    # DAP
+    nvim-dap
+    nvim-dap-ui
+    nvim-dap-virtual-text
+    nvim-nio
+
     # formatting & linting
     conform-nvim
     nvim-lint
