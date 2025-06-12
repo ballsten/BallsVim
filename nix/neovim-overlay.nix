@@ -35,7 +35,15 @@ let
     # https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=vimPlugins
 
     # treesitter
-    nvim-treesitter.withAllGrammars
+    (nvim-treesitter.withPlugins (p: [
+      p.nix
+      p.lua
+      p.javascript
+      p.typescript
+      p.vue
+      p.json
+      p.markdown
+    ]))
     nvim-treesitter-textobjects
     nvim-ts-autotag
 
@@ -83,6 +91,7 @@ let
     # language servers, etc.
     ripgrep
     ast-grep
+    fd
   ];
 in
 {

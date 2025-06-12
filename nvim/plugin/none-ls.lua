@@ -13,16 +13,11 @@ local opts = {
 }
 
 -- add sources based on availability of tools
-if vim.fn.executable('stylua') then
+if vim.fn.executable('stylua') == 1 then
   table.insert(opts.sources, null_ls.builtins.formatting.stylua)
 end
 
-if vim.fn.executable('biome') then
+if vim.fn.executable('biome') == 1 then
   table.insert(opts.sources, null_ls.builtins.formatting.biome)
 end
-
-null_ls.setup {
-  sources = {
-    null_ls.builtins.formatting.biome,
-  },
-}
+null_ls.setup(opts)

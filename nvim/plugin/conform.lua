@@ -20,13 +20,13 @@ local opts = {
 }
 
 -- add formatters if availabile
-if vim.fn.executable('stylua') then
+if vim.fn.executable('stylua') == 1 then
   opts.formatters_by_ft.lua = { 'stylua' }
 end
-if vim.fn.executable('nixd') then
+if vim.fn.executable('nixd') == 1 then
   opts.formatters_by_ft.nix = { 'nixfmt' }
 end
-if vim.fn.executable('biome') then
+if vim.fn.executable('biome') == 1 then
   -- filetypes supported by biome
   local supported = {
     'astro',
