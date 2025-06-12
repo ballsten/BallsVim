@@ -44,6 +44,7 @@ let
 
     # LSP
     nvim-lspconfig
+    none-ls-nvim
 
     # coding
     blink-cmp
