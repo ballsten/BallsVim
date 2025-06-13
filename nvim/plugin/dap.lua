@@ -1,3 +1,4 @@
+-- TODO: needs vtsls configuration
 -- only load once
 if vim.g.loaded_plugin_dap then
   return

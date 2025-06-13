@@ -7,7 +7,115 @@ vim.g.loaded_plugin_lsp = true
 local BallsVim = require('BallsVim')
 local icons = BallsVim.icons
 
--- LSP configuration executed when LSP is attached to a buffer
+-- LSP Server Settings
+--
+-- This table contains the configuration for each LSP
+-- The LSP will be enabled if the executable is available in the environment
+local servers = {
+  lua_ls = {
+    executable = 'lua-language-server',
+    settings = {
+      Lua = {
+        workspace = {
+          checkThirdParty = false,
+        },
+        codeLens = {
+          enable = true,
+        },
+        completion = {
+          callSnippet = 'Replace',
+        },
+        doc = {
+          privateName = { '^_' },
+        },
+        hint = {
+          enable = true,
+          setType = false,
+          paramType = true,
+          paramName = 'Disable',
+          semicolon = 'Disable',
+          arrayIndex = 'Disable',
+        },
+      },
+    },
+  },
+  nixd = {
+    executable = 'nixd',
+    settings = {},
+  },
+  vtsls = {
+    executable = 'vtsls',
+    -- explicitly add default filetypes, so that we can extend
+    -- them in related extras
+    filetypes = {
+      'javascript',
+      'javascriptreact',
+      'javascript.jsx',
+      'typescript',
+      'typescriptreact',
+      'typescript.tsx',
+    },
+    settings = {
+      complete_function_calls = true,
+      vtsls = {
+        enableMoveToFileCodeAction = true,
+        autoUseWorkspaceTsdk = true,
+        experimental = {
+          maxInlayHintLength = 30,
+          completion = {
+            enableServerSideFuzzyMatch = true,
+          },
+        },
+      },
+      typescript = {
+        updateImportsOnFileMove = { enabled = 'always' },
+        suggest = {
+          completeFunctionCalls = true,
+        },
+        inlayHints = {
+          enumMemberValues = { enabled = true },
+          functionLikeReturnTypes = { enabled = true },
+          parameterNames = { enabled = 'literals' },
+          parameterTypes = { enabled = true },
+          propertyDeclarationTypes = { enabled = true },
+          variableTypes = { enabled = false },
+        },
+      },
+    },
+  },
+}
+-- helper functions
+-- execute a lsp command
+local function execute(opts)
+  local params = {
+    command = opts.command,
+    arguments = opts.arguments,
+  }
+  if opts.open then
+    require('trouble').open {
+      mode = 'lsp_command',
+      params = params,
+    }
+  else
+    return vim.lsp.buf_request(0, 'workspace/executeCommand', params, opts.handler)
+  end
+end
+
+-- keymap function for code action
+local function code_action(action)
+  return function()
+    vim.lsp.buf.code_action {
+      apply = true,
+      context = {
+        only = { action },
+        diagnostics = {},
+      },
+    }
+  end
+end
+
+-- LspAttach AutoCommand
+-- Enable buffer specific configuration for LSP
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('LSP:', {}),
   callback = function(args)
@@ -16,6 +124,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- map keys
     local map = vim.keymap.set
+
     map('n', '<leader>cl', function()
       Snacks.picker.lsp_config()
     end, { buffer = buffer, desc = 'Lsp Info' })
@@ -78,18 +187,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if client:supports_method('textDocument/documentHighlight') and Snacks.words.is_enabled() then
-      map('n', ']]', function()
-        Snacks.words.jump(vim.v.count1)
-      end, { buffer = buffer, desc = 'Next Reference' })
-      map('n', '[[', function()
-        Snacks.words.jump(-vim.v.count1)
-      end, { buffer = buffer, desc = 'Prev Reference' })
-      map('n', '<a-n>', function()
-        Snacks.words.jump(vim.v.count1, true)
-      end, { buffer = buffer, desc = 'Next Reference' })
-      map('n', '<a-p>', function()
-        Snacks.words.jump(-vim.v.count1, true)
-      end, { buffer = buffer, desc = 'Prev Reference' })
+      -- stylua: ignore start
+      map('n', ']]', function() Snacks.words.jump(vim.v.count1) end, { buffer = buffer, desc = 'Next Reference' })
+      map('n', '[[', function() Snacks.words.jump(-vim.v.count1) end, { buffer = buffer, desc = 'Prev Reference' })
+      map('n', '<a-n>', function() Snacks.words.jump(vim.v.count1, true) end, { buffer = buffer, desc = 'Next Reference' })
+      map('n', '<a-p>', function() Snacks.words.jump(-vim.v.count1, true) end, { buffer = buffer, desc = 'Prev Reference' })
+      -- stylua: ignore end
     end
 
     -- inlay hints
@@ -111,6 +214,39 @@ vim.api.nvim_create_autocmd('LspAttach', {
         buffer = buffer,
         callback = vim.lsp.codelens.refresh,
       })
+    end
+
+    -- vtsls configuration
+    if client.name == 'vtsls' then
+      map('n', 'gD', function()
+        local params = vim.lsp.util.make_position_params(0, 'utf-8')
+        execute {
+          command = 'typescript.goToSourceDefinition',
+          arguments = { params.textDocument.uri, params.position },
+          open = true,
+        }
+      end, { desc = 'Goto Source Definition', buffer = buffer })
+
+      map('n', 'gR', function()
+        execute {
+          command = 'typescript.findAllFileReferences',
+          arguments = { vim.uri_from_bufnr(0) },
+          open = true,
+        }
+      end, { desc = 'File References', buffer = buffer })
+
+      map('n', '<leader>co', code_action('source.organizeImports'), { desc = 'Organize Imports', buffer = buffer })
+      map(
+        'n',
+        '<leader>cM',
+        code_action('source.addMissingImports.ts'),
+        { desc = 'Add missing imports', buffer = buffer }
+      )
+      map('n', '<leader>cu', code_action('source.removeUnused.ts'), { desc = 'Remove unused imports', buffer = buffer })
+      map('n', '<leader>cD', code_action('source.fixAll.ts'), { desc = 'Fix all diagnostics', buffer = buffer })
+      map('n', '<leader>cV', function()
+        execute { command = 'typescript.selectTypeScriptVersion' }
+      end, { desc = 'Select TS workspace version', buffer = buffer })
     end
   end,
 })
@@ -141,41 +277,7 @@ local diagnostics = {
 }
 vim.diagnostic.config(vim.deepcopy(diagnostics))
 
--- LSP Server Settings
-local servers = {
-  lua_ls = {
-    executable = 'lua-language-server',
-    settings = {
-      Lua = {
-        workspace = {
-          checkThirdParty = false,
-        },
-        codeLens = {
-          enable = true,
-        },
-        completion = {
-          callSnippet = 'Replace',
-        },
-        doc = {
-          privateName = { '^_' },
-        },
-        hint = {
-          enable = true,
-          setType = false,
-          paramType = true,
-          paramName = 'Disable',
-          semicolon = 'Disable',
-          arrayIndex = 'Disable',
-        },
-      },
-    },
-  },
-  nixd = {
-    executable = 'nixd',
-    settings = {},
-  },
-}
-
+-- set global LSP capabilities
 local has_cmp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
 local has_blink, blink = pcall(require, 'blink.cmp')
 local capabilities = vim.tbl_deep_extend(
@@ -195,17 +297,17 @@ local capabilities = vim.tbl_deep_extend(
   }
 )
 
-local function setup(server)
+-- loop over all servers for setup
+for server, _ in pairs(servers) do
+  -- merge global capabilities with server config
   local server_opts = vim.tbl_deep_extend('force', {
     capabilities = vim.deepcopy(capabilities),
   }, servers[server] or {})
+
+  -- check if the server should be configured
   if server_opts.enabled == false or not vim.fn.executable(server_opts.executable) then
     return
   end
 
   require('lspconfig')[server].setup(server_opts)
-end
-
-for server, _ in pairs(servers) do
-  setup(server)
 end
