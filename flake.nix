@@ -48,7 +48,7 @@
             lua-language-server
             nixd
             stylua
-            nixfmt-rfc-style
+            nixfmt
             nvim-dev
           ];
           shellHook = ''
