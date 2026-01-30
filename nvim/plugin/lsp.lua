@@ -309,5 +309,7 @@ for server, _ in pairs(servers) do
     return
   end
 
-  require('lspconfig')[server].setup(server_opts)
+  -- Change due to nvim 0.11
+  -- require('lspconfig')[server].setup(server_opts)
+  vim.lsp.config[server] = server_opts
 end

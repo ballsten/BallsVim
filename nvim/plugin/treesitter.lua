@@ -6,7 +6,7 @@ vim.g.loaded_plugin_treesitter = true
 
 -- setup treesitter
 ---@diagnostic disable-next-line: missing-fields
-require('nvim-treesitter.configs').setup {
+require('nvim-treesitter.config').setup {
   highlight = { enable = true },
   indent = { enable = true },
   incremental_selection = {
